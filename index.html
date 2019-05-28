@@ -2,35 +2,38 @@
 
 <html>
     <head>
-        <title>Ceasar Decrypto</title>    
+        <title>Ceasar Decrypto</title> <!-- Título da página -->
     </head>
 
     <body>
+        <!-- Botão que faz a requisição à api do desafio ao ser clicado -->
         <button id="get-button" style="display: block; margin: 0 auto">Get Cipher!</button>
 
+        <!-- Tabela (inicialmente invisível) que contém a resposta da API, texto decifrado e seu resumo sha1 -->
         <table id="cipher" style="display: none">
             <caption>Ceasar Cipher</caption>
             
             <tbody>
                 <tr>
-                    <th>Ciphered Text:</th>
-                    <td id="ciphered"></td>
+                    <th>Ciphered Text:</th> <!-- Texto cifrado -->
+                    <td id="ciphered"></td> 
                 </tr>
                 <tr>
-                    <th>Shift Key:</th>
+                    <th>Shift Key:</th> <!-- Número de casas avançadas na criptografia -->
                     <td id="shift"></td>
                 </tr>
                 <tr>
-                    <th>Deciphered Text:</th>
+                    <th>Deciphered Text:</th> <!-- Texto decifrado -->
                     <td id="deciphered"></td>
                 </tr>
                 <tr>
-                    <th>Sha1 Hexadecimal Cryptographic Resume:</th>
+                    <th>Sha1 Hexadecimal Cryptographic Resume:</th> <!-- Resumo criptográfico sha1 em formato hexadecimal -->
                     <td id="resume"></td>
                 </tr>
             </tbody>
         </table>
     </body>
 
+    <!-- Importa o arquivo (criado pelo módulo "webpack") que contém todos os scripts em um só -->
     <script src="bundle.js" type="text/javascript"></script>
 </html>
