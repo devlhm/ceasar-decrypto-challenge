@@ -132,6 +132,11 @@ function resumeSha1(reqBody) {
     return reqBody.resumo_criptografico;
 }
 
+// envia o arquivo 'answer.json' como resposta
+app.get('/get-file', (req, res, next) => {
+    res.sendFile(__dirname + '/src/answer.json');
+});
+
 // middleware executado quando o servidor sobe
 server.listen(port, () => {
 

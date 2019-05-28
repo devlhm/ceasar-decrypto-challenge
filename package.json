@@ -1,16 +1,12 @@
 {
   "dependencies": {
     "body-parser": "^1.19.0",
-    "clientside-require": "^4.7.2",
     "concurrently": "^4.1.0",
-    "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "http-server": "^0.11.1",
     "js-sha1": "^0.6.0",
-    "nodemon": "^1.19.0",
-    "webpack": "^4.32.2",
-    "webpack-dev-server": "^3.4.1"
+    "webpack": "^4.32.2"
   },
   "devDependencies": {
     "css-loader": "^2.1.1",
