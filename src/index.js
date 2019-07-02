@@ -1,18 +1,85 @@
-import './index.css'; // importa o arquivo que estiliza a página
-import getCipher from './getCipher'; // importa a função 'getCipher' do arquivo 'getCipher.js'
-import postCipher from './postCipher'; // importa a função 'postCipher' do arquivo 'postCipher.js'
+import './index.css';
+import request from './request';
 
-const getButton = document.getElementById("get-button"); // botão para fazer a requisição à api do desafio
-const postButton = document.getElementById("post-button");
+const form = document.forms[0];
 
-const token = "2fa463a6cfe670651d81b56cafd38d2c36e392c3"; // token para fazer requisições à api
+for(let elem of form.elements) {
+    if(elem.type === "textarea") {
+        elem.oninput = e => {
+            const submitBtn = document.getElementById('submit');
+            submitBtn.disabled = false;
+            submitBtn.value = "Submit"
+        }
+    }
 
-// chama a função "getCipher" ao clicar no botão "Get Cipher"
-getButton.onclick = function(e) {
-    getCipher(e, token);
+    if(elem.id === "bfa") {
+        elem.onchange = e => {
+            if(e.target.checked) {
+                document.getElementById('shift').disabled = true;
+            } else {
+                document.getElementById('shift').removeAttribute('disabled');
+            }
+        }
+    }
+
+    if(elem.id === "with-shift") {
+        elem.onchange = e => {
+            if(e.target.checked) {
+                document.getElementById('shift').removeAttribute('disabled');
+            }
+        }
+    }
 }
 
-// chama a função "postCipher" ao clicar no botão "Post" (inicialmente invisível)
-postButton.onclick = function(e) {
-    postCipher(e, token);
+form.onsubmit = e => {
+    e.preventDefault();
+
+    for(let elem of form.elements) {
+        if(elem.type === "submit") {
+            elem.value = "Processing...";
+            elem.disabled = true;
+        }
+    }
+
+    const formObject = formToObject(form);
+
+    request(formObject);
+}
+
+function formToObject(form) {
+    let text;
+    let shift;
+    let operation;
+    let bfa;
+
+    for(let elem of form.elements) {
+        if(elem.name === "text") {
+            text = elem.value;
+        }
+
+        if(elem.name === "shift") {
+            shift = elem.value;
+        }
+
+        if(elem.name === "operation") {
+            if(elem.checked) {
+                operation = elem.value;
+            }
+        }
+
+        if(elem.name === "bfa") {
+            if(elem.checked) {
+                bfa = elem.value;
+            }
+        }
+    }
+
+    const formObject = {
+        text: text,
+        shift: shift,
+        operation: operation,
+        bfa: bfa
+    }
+
+    return formObject;
 }

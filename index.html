@@ -6,34 +6,32 @@
     </head>
 
     <body>
-        <!-- Botão que faz a requisição à api do desafio ao ser clicado -->
-        <button id="get-button" style="display: block; margin: 0 auto">Get Cipher!</button>
+        <div id="all">
+            <form action="/cipher" id="decipher" method="POST">
+                <input type="radio" id="with-shift" name="bfa" value="false" checked>
 
-        <!-- Tabela (inicialmente invisível) que contém a resposta da API, texto decifrado e seu resumo sha1 -->
-        <table id="cipher" style="display: none">
-            <caption>Ceasar Cipher</caption>
-            
-            <tbody>
-                <tr>
-                    <th>Ciphered Text:</th> <!-- Texto cifrado -->
-                    <td id="ciphered"></td> 
-                </tr>
-                <tr>
-                    <th>Shift Key:</th> <!-- Número de casas avançadas na criptografia -->
-                    <td id="shift"></td>
-                </tr>
-                <tr>
-                    <th>Deciphered Text:</th> <!-- Texto decifrado -->
-                    <td id="deciphered"></td>
-                </tr>
-                <tr>
-                    <th>Sha1 Hexadecimal Cryptographic Resume:</th> <!-- Resumo criptográfico sha1 em formato hexadecimal -->
-                    <td id="resume"></td>
-                </tr>
-            </tbody>
-        </table>
+                <input type="number" id="shift" name="shift" step="1" value="3" required/>
+                <label for="shift">Shift Key</label>
 
-        <button id="post-button" style="display: none; margin: 0 auto">Post to API!</button>
+                <input type="radio" name="bfa" id="bfa" value=true>
+                <label for="bfa">Brute-Force Attack</label>
+
+                <div>
+                    <input type="radio" name="operation" id="decipher" value="decipher"/>
+                    <label for="decipher">Decipher</label>
+
+                    <input type="radio" name="operation" id="cipher" value="cipher" checked/>
+                    <label for="cipher">Cipher</label>
+                </div> 
+
+                <textarea name="text" id="text" cols="50" rows="10" autofocus required placeholder="Type text to be ciphered here..."></textarea>
+                <p id="unknown-character" hidden>Your text have one/some unknown characters. Check it. Remember, don't use accented letters.</p>
+
+                <input type="submit" id="submit" value="Submit"/>
+
+                <p id="result"></p>
+            </form>
+        </div>
     </body>
 
     <!-- Importa o arquivo (criado pelo módulo "webpack") que contém todos os scripts em um só -->
