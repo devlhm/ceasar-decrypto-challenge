@@ -1,4 +1,3 @@
-import './index.css';
 import request from './request';
 
 const form = document.forms[0];
@@ -33,6 +32,7 @@ for(let elem of form.elements) {
 
 form.onsubmit = e => {
     e.preventDefault();
+    document.getElementById('result').innerHTML = '';
 
     for(let elem of form.elements) {
         if(elem.type === "submit") {

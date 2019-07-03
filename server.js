@@ -1,20 +1,15 @@
-const express = require("express"); // importa o módulo 'express'
-const app = express(); // cria uma instância do express e salva numa constante
-const http = require('http'); // importa o módulo 'http', usado para criar o servidor
+const express = require("express");
+const app = express();
+const http = require('http');
 const bodyParser = require('body-parser');
 
-const server = http.createServer(app); // cria o servidor http
+const server = http.createServer(app);
 
-// porta onde o servidor vai rodar
 const port = 3000;
 
-// subindo diretórios estáticos para o servidor
 app.use(express.static('src'));
 app.use(express.static('dist'));
 
-const jsonPath = './src/answer.json'; // caminho para o arquivo 'answer.json'
-
-// middleware que loga no console o verbo da requisição recebida e o caminho
 app.use((req, res, next) => {
     const requestMethod = req.method;
     const requestPath = req.path;
@@ -24,19 +19,13 @@ app.use((req, res, next) => {
     next();
 });
 
-// requisição "GET" à rota-raiz (é realizada quando o cliente acessa o URL "http://localhost:{numero-da-porta}")
 app.get('/', (req, res, next) => {
-    res.header('Content-Type', 'text/html') // define o cabeçalho 'Content-Type'
-
-    // envia o arquivo html da página, que vai ser renderizado
+    res.header('Content-Type', 'text/html');
     res.sendFile(__dirname + '/index.html');
 });
 
-// requisição "POST" à rota "http://localhost:{numero-da-porta}/decipher"
-// rota usada para decifrar o texto enviado no corpo da requisição no campo "cifrado"
-// e criar um resumo criptográfico sha1, retornando-o junto com o texto descifrado
 app.post('/receive-text', bodyParser.json(), (req, res, next) => {
-    const body = req.body; // corpo da requisição
+    const body = req.body;
 
     const text = body.text;
     let shiftKey = parseInt(body.shift, 10);
@@ -57,11 +46,11 @@ app.post('/receive-text', bodyParser.json(), (req, res, next) => {
 
     res.header('Content-Type', 'text/plain');
 
-    if(processedText === 'unknown character') {
-        res.send('err: unknown character').status(400);
+    if(!processedText) {
+        res.sendStatus(400);
+    } else {
+        res.send(processedText).status(200);
     }
-
-    res.send(processedText).status(200);
 });
 
 function process(text, shiftKey, operation) {
@@ -93,10 +82,10 @@ function process(text, shiftKey, operation) {
         ]
     }
 
-    const processedTextChars = textChars.map(char => {
+    let processedTextChars = textChars.map(char => {
         const otherChar = otherChars(char, chars);
         if(otherChar === 'unknown character') {
-            return 'error';
+            return ''
         } else if(otherChar != null) {
             return otherChar
         }
@@ -127,8 +116,6 @@ function process(text, shiftKey, operation) {
             }
         }
 
-        console.log(processedCharIndex)
-
         if(!isCaps) {
             return chars.alphabet[processedCharIndex];
         } else {
@@ -137,13 +124,11 @@ function process(text, shiftKey, operation) {
     });
 
     if(processedTextChars.length !== textChars.length) {
-        return 'unknown character'
+        return null
+    } else {
+        const processedText = processedTextChars.join("");
+        return processedText;
     }
-
-    console.log(processedTextChars);
-
-    const processedText = processedTextChars.join("");
-    return processedText;
 }
 
 function otherChars(char, alphabets) {
@@ -162,9 +147,6 @@ function otherChars(char, alphabets) {
     return null
 }
 
-// middleware executado quando o servidor sobe
 server.listen(port, () => {
-
-    // loga o url do servidor no console
     console.log("The server is on at http://localhost:" + port + " !");
 });
